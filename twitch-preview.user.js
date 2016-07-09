@@ -19,6 +19,8 @@ $(function() {
 
     var channelNumber = 1;
     var timeout = null;
+                var x = 2;
+
 
     //not sure what this does. I think it breaks out of iframes?
     if(window.top !== window.self) {
@@ -44,7 +46,11 @@ $(function() {
             var node = $(this).find("a.cap");
             var channel = $(node).attr("href");
             channel = channel.replace(/\//g, "");
-            showPreview(node, channel, false);
+            if (x == 2) {
+            showPreview(node, channel, false);  
+                x = 1;
+            }
+            
 
             //Activate when mouse idle over element feature, slight bug
 
@@ -89,7 +95,11 @@ $(function() {
             //previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
             
             //broken due to mixed content warning
-            previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+            // previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+        
+            //works with firefox if disable https setting thing, probably same with one above not sure what html5 does exactly...
+            previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "&!html5' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+
         }
         return previewElement;
     }
