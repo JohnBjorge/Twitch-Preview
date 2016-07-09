@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           Twitch Preview
-// @description    Allows you to preview a channel upon mousing over.  
-// @namespace      https://github.com/JohnBjorge/Twitch-Preview
+// @description    Allows you to preview a channel upon mousing over.
+// @namespace      hi
 // @version        1.0
 // @author         johnnybgucci (userscript user id link)
 // @supportURL     https://github.com/JohnBjorge/Twitch-Preview/issues
@@ -15,6 +15,11 @@
 
 $(function() {
 
+    // <script src= "http://player.twitch.tv/js/embed/v1.js"></script>
+
+    var channelNumber = 1;
+    var timeout = null;
+
     //not sure what this does. I think it breaks out of iframes?
     if(window.top !== window.self) {
         return;
@@ -22,112 +27,76 @@ $(function() {
 
     //imports waitForKeyElements see non mini version below
     //try finding a cleaner solution such as last comment https://gist.github.com/BrockA/2625891#file-waitforkeyelements-js
-    function waitForKeyElements(e,t,n,a){var r,o;r="undefined"==typeof a?$(e):$(a).contents().find(e),r&&r.length>0?(o=!0,r.each(function(){var e=$(this),n=e.data("alreadyFound")||!1;if(!n){var a=t(e);a?o=!1:e.data("alreadyFound",!0)}})):o=!1;var l=waitForKeyElements.controlObj||{},i=e.replace(/[^\w]/g,"_"),d=l[i];o&&n&&d?(clearInterval(d),delete l[i]):d||(d=setInterval(function(){waitForKeyElements(e,t,n,a)},300),l[i]=d),waitForKeyElements.controlObj=l}
+    function waitForKeyElements(e,t,n,a){var r,o;r="undefined"==typeof a?$(e):$(a).contents().find(e),r&&r.length>0?(o=!0,r.each(function(){var e=$(this),n=e.data("alreadyFound")||!1;if(!n){var a=t(e);a?o=!1:e.data("alreadyFound",!0)}})):o=!1;var l=waitForKeyElements.controlObj||{},i=e.replace(/[^\w]/g,"_"),d=l[i];o&&n&&d?(clearInterval(d),delete l[i]):d||(d=setInterval(function(){waitForKeyElements(e,t,n,a)},300),l[i]=d),waitForKeyElements.controlObj=l};
 
 
     //function for checking state of elements that are of interest
 
-    waitForKeyElements(".streams .stream .content .thumb, .videos .video .content .thumb", checkForElements);
+    //waits for elements to load, once loaded calls function, false means continues to check for new elements (infinite scroll)
+    waitForKeyElements(".streams .stream .content .thumb, .videos .video .content .thumb .cap", checkForElements, false);
+
 
     function checkForElements(jNode) {
-        $(".streams .stream .content .thumb .cap img, .videos .video .content .thumb .cap img").css("border", "5px solid red");
+
+        jNode.attr("id", "channel" + channelNumber);
+        channelNumber++;
+        jNode.mouseenter(function() {
+            var node = $(this).find("a.cap");
+            var channel = $(node).attr("href");
+            channel = channel.replace(/\//g, "");
+            showPreview(node, channel, false);
+
+            //Activate when mouse idle over element feature, slight bug
+
+            // $(node).mousemove(function() {
+            //  if (timeout !== null) {
+            //      clearTimeout(timeout);
+            //  }
+
+            //  timeout = setTimeout(function() {
+            //      console.log("mouse idle for 2 seconds");
+            //      //var node = $(channelElement).find("a.cap");
+            //      var channel = $(node).attr("href");
+            //      channel = channel.replace(/\//, "");
+            //      showPreview(node, channel, true);       
+            //  }, 2000);
+            // });
+
+        });
+
+        jNode.mouseleave(function() {
+            removePreview();
+        });
     }
 
+    //Takes a url and displays a preview of given channel
+    function showPreview(element, channel, dummyFrame) {
+        var previewElement = getPreviewElement(element.width(), element.height(), channel, dummyFrame);
+        previewElement.prependTo(element);
+    }
 
+    //Returns a preview element
+    function getPreviewElement(width, height, channel, dummyFrame) {
+        var previewElement = "";
+        if (dummyFrame === true) {
+            previewElement = $("<div id='streamPreview'></div>");
+            previewElement.css("height", height);
+            previewElement.css("width", width);
+            previewElement.css("border", "5px solid red");
+            previewElement.css("background-color", "black");
+        } else {
+            //crappy work around using flash
+            //previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+            
+            //broken due to mixed content warning
+            previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+        }
+        return previewElement;
+    }
+
+    //Removes a preview element
+    function removePreview() {
+        $("#streamPreview").remove();
+    }
 
 });
-
-
-// NONE MINI VERSION FOR DEBUGGING
-// /*--- waitForKeyElements():  A utility function, for Greasemonkey scripts,
-//     that detects and handles AJAXed content.
-
-//     Usage example:
-
-//         waitForKeyElements (
-//             "div.comments"
-//             , commentCallbackFunction
-//         );
-
-//         //--- Page-specific function to do what we want when the node is found.
-//         function commentCallbackFunction (jNode) {
-//             jNode.text ("This comment changed by waitForKeyElements().");
-//         }
-
-//     IMPORTANT: This function requires your script to have loaded jQuery.
-// */
-// function waitForKeyElements (
-//     selectorTxt,    /* Required: The jQuery selector string that
-//                         specifies the desired element(s).
-//                     */
-//     actionFunction, /* Required: The code to run when elements are
-//                         found. It is passed a jNode to the matched
-//                         element.
-//                     */
-//     bWaitOnce,      /* Optional: If false, will continue to scan for
-//                         new elements even after the first match is
-//                         found.
-//                     */
-//     iframeSelector  /* Optional: If set, identifies the iframe to
-//                         search.
-//                     */
-// ) {
-//     var targetNodes, btargetsFound;
-
-//     if (typeof iframeSelector == "undefined")
-//         targetNodes     = $(selectorTxt);
-//     else
-//         targetNodes     = $(iframeSelector).contents ()
-//                                            .find (selectorTxt);
-
-//     if (targetNodes  &&  targetNodes.length > 0) {
-//         btargetsFound   = true;
-//         --- Found target node(s).  Go through each and act if they
-//             are new.
-        
-//         targetNodes.each ( function () {
-//             var jThis        = $(this);
-//             var alreadyFound = jThis.data ('alreadyFound')  ||  false;
-
-//             if (!alreadyFound) {
-//                 //--- Call the payload function.
-//                 var cancelFound     = actionFunction (jThis);
-//                 if (cancelFound)
-//                     btargetsFound   = false;
-//                 else
-//                     jThis.data ('alreadyFound', true);
-//             }
-//         } );
-//     }
-//     else {
-//         btargetsFound   = false;
-//     }
-
-//     //--- Get the timer-control variable for this selector.
-//     var controlObj      = waitForKeyElements.controlObj  ||  {};
-//     var controlKey      = selectorTxt.replace (/[^\w]/g, "_");
-//     var timeControl     = controlObj [controlKey];
-
-//     //--- Now set or clear the timer as appropriate.
-//     if (btargetsFound  &&  bWaitOnce  &&  timeControl) {
-//         //--- The only condition where we need to clear the timer.
-//         clearInterval (timeControl);
-//         delete controlObj [controlKey]
-//     }
-//     else {
-//         //--- Set a timer, if needed.
-//         if ( ! timeControl) {
-//             timeControl = setInterval ( function () {
-//                     waitForKeyElements (    selectorTxt,
-//                                             actionFunction,
-//                                             bWaitOnce,
-//                                             iframeSelector
-//                                         );
-//                 },
-//                 300
-//             );
-//             controlObj [controlKey] = timeControl;
-//         }
-//     }
-//     waitForKeyElements.controlObj   = controlObj;
-// }
