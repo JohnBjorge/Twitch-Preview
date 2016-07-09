@@ -2,3 +2,4 @@
 2. Depending on video player being used make it look good. Sometimes is too scrunched. Largely depends on video player to be used.
 3. Load when mouse idle on channel. Almost working.
 4. Loading icon?
+5. Work on readme
