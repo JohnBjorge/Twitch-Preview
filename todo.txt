@@ -1,5 +1,4 @@
-1. Play around with twitch. Identify important components and their classes. Think about how to select all the channel elements you need to select.
-2. What do I need in order to execute some javascript on the page?
-3. Chrome extension, bookmarklet, firefox extension? Which to pick, does it matter which one.
-4. Mess around with iframe elements. That's how twitch shows their streams.
-...that's good enough for now.
+1. Research potential workarounds for mixed content warning (http, https conflict). Current workaround includes using twitch's old flash video player. Other workaround is to disable in firefox which was easy-ish.
+2. Depending on video player being used make it look good. Sometimes is too scrunched. Largely depends on video player to be used.
+3. Load when mouse idle on channel. Almost working.
+4. Loading icon?
