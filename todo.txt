@@ -1,5 +1,4 @@
 1. Research potential workarounds for mixed content warning (http, https conflict). Current workaround includes using twitch's old flash video player. Other workaround is to disable in firefox which was easy-ish.
 2. Depending on video player being used make it look good. Sometimes is too scrunched. Largely depends on video player to be used.
-3. Load when mouse idle on channel. Almost working.
-4. Loading icon?
-5. Work on readme
+3. Loading icon?
+4. Work on readme

@@ -19,7 +19,6 @@ $(function() {
 
     var channelNumber = 1;
     var timeout = null;
-                var x = 2;
 
 
     //not sure what this does. I think it breaks out of iframes?
@@ -46,32 +45,37 @@ $(function() {
             var node = $(this).find("a.cap");
             var channel = $(node).attr("href");
             channel = channel.replace(/\//g, "");
-            if (x == 2) {
-            showPreview(node, channel, false);  
-                x = 1;
-            }
+            //showPreview(node, channel, false);
             
 
             //Activate when mouse idle over element feature, slight bug
 
+            timeout = setTimeout(function() {
+                 console.log("mouse idle for 2 seconds");
+                 // var node = $(channelElement).find("a.cap");
+                 // var channel = $(node).attr("href");
+                 // channel = channel.replace(/\//, "");
+                 showPreview(node, channel, false);       
+             }, 1000);
+
+
             // $(node).mousemove(function() {
             //  if (timeout !== null) {
             //      clearTimeout(timeout);
+            //      console.log("mouse move");
             //  }
-
-            //  timeout = setTimeout(function() {
-            //      console.log("mouse idle for 2 seconds");
-            //      //var node = $(channelElement).find("a.cap");
-            //      var channel = $(node).attr("href");
-            //      channel = channel.replace(/\//, "");
-            //      showPreview(node, channel, true);       
-            //  }, 2000);
             // });
+
+
 
         });
 
+
+
         jNode.mouseleave(function() {
             removePreview();
+            clearTimeout(timeout);
+            console.log("mouse exit");
         });
     }
 
@@ -79,6 +83,11 @@ $(function() {
     function showPreview(element, channel, dummyFrame) {
         var previewElement = getPreviewElement(element.width(), element.height(), channel, dummyFrame);
         previewElement.prependTo(element);
+        console.log("appended preview");
+        // $("#streamPreview").on('click', function() {
+        //     window.location = "https://www.twitch.tv/" + channel;
+        // });
+        // console.log("onclick thing");
     }
 
     //Returns a preview element
@@ -92,14 +101,13 @@ $(function() {
             previewElement.css("background-color", "black");
         } else {
             //crappy work around using flash
-            //previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
+            previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
             
             //broken due to mixed content warning
             // previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
         
             //works with firefox if disable https setting thing, probably same with one above not sure what html5 does exactly...
-            previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "&!html5' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
-
+            //previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "&!html5' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
         }
         return previewElement;
     }
