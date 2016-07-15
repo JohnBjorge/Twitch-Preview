@@ -5,8 +5,8 @@
 // @version        1.0
 // @author         johnnybgucci (userscript user id link)
 // @supportURL     https://github.com/JohnBjorge/Twitch-Preview/issues
-// @include        http://*.twitch.tv/directory/game/*
-// @include        https://*.twitch.tv/directory/game/*
+// @include        http://www.twitch.tv/directory/game/*
+// @include        https://www.twitch.tv/directory/game/*
 // @grant          GM_addStyle
 // @run-at         document-start
 // @require        https://code.jquery.com/jquery-1.11.2.min.js
@@ -23,16 +23,18 @@ $(function() {
         return;
     }
 
-    //imports waitForKeyElements see non mini version below
     //try finding a cleaner solution such as last comment https://gist.github.com/BrockA/2625891#file-waitforkeyelements-js
     function waitForKeyElements(e,t,n,a){var r,o;r="undefined"==typeof a?$(e):$(a).contents().find(e),r&&r.length>0?(o=!0,r.each(function(){var e=$(this),n=e.data("alreadyFound")||!1;if(!n){var a=t(e);a?o=!1:e.data("alreadyFound",!0)}})):o=!1;var l=waitForKeyElements.controlObj||{},i=e.replace(/[^\w]/g,"_"),d=l[i];o&&n&&d?(clearInterval(d),delete l[i]):d||(d=setInterval(function(){waitForKeyElements(e,t,n,a)},300),l[i]=d),waitForKeyElements.controlObj=l};
 
-    //waits for elements to load, once loaded calls function, false means continues to check for new elements (infinite scroll)
-    waitForKeyElements(".streams .stream .content .thumb, .videos .video .content .thumb .cap", checkForElements, false);
+    // Waits for channel elements to load, once loaded calls main.
+    // False means continues to check for new elements (infinite scroll)
+    waitForKeyElements(".streams .stream .content .thumb, .videos .video .content .thumb .cap", main, false);
 
 
-    function checkForElements(jNode) {
-        jNode.mouseenter(function() {
+    // Once channel elements have loaded the function main detects mouse enter and mouse leave events
+    // on the given channelNode. If mouse hovers over element for 1 second stream preview is generated.
+    function main(channelNode) {
+        channelNode.mouseenter(function() {
             var node = $(this).find("a.cap");
 
             timeout = setTimeout(function() {
@@ -40,7 +42,7 @@ $(function() {
              }, 1000);
         });
 
-        jNode.mouseleave(function() {
+        channelNode.mouseleave(function() {
             removePreview();
             clearTimeout(timeout);
         });
@@ -76,13 +78,14 @@ $(function() {
                 previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
 
             } else {
-                //if it's unrecognized browser I'm gonna go with flash working but doubtful
+                //if it's unrecognized browser I'm gonna go with flash working but doubtful it would work
                 previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
             }
          }
         return previewElement;
     }
 
+    // Removes uneeded stream elements such as volume, pause button, etc
     function cleanPreviewElement() {
         if (browser === 'FIREFOX') {
             var iframe = $("#streamPreview iframe");
@@ -96,13 +99,13 @@ $(function() {
 
 
 
-    //Removes the current stream preview element
+    // Removes the current stream preview element
     function removePreview() {
         $("#streamPreview").remove();
     }
 
 
-    // Returns the name of users browser and the version
+    // Returns the name of browser and the version
     function browserInfo() {
         browserInfo = (function(){
             var ua= navigator.userAgent, tem,

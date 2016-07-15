@@ -1,4 +1,3 @@
-1. Research potential workarounds for mixed content warning (http, https conflict). Current workaround includes using twitch's old flash video player. Other workaround is to disable in firefox which was easy-ish.
-2. Depending on video player being used make it look good. Sometimes is too scrunched. Largely depends on video player to be used.
-3. Loading icon?
-4. Work on readme
+1. Loading icon?
+2. Clean up code (import the waitforkeyelements script)
+3. Work on readme for instructions
