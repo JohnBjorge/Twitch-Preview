@@ -1,15 +1,17 @@
-# Twitch Preview
----
-One Paragraph of project description and motivation goes here.
+Twitch-Preview
+===================
+One Paragraph of project description goes here
 
-### Getting Started
----
+----------
+
+Getting Started
+---------------
 These instructions will get you a copy of the project up and running on your local machine.
 
-##### Prerequisites
+### Prerequisites ###
 What things you need to install the software and how to install them.
 
-##### Installing
+### Installation ###
 A step by step series of examples that tell you have to get a development env running
 
 Stay what the step will be
@@ -20,13 +22,17 @@ And repeat
 until finished
 End with an example of getting some data out of the system or using it for a little demo
 
-### Future Plans
----
- - Stuff
- - More stuff
+----------
 
-### Credits
-----
+Future Plans
+-------------------
+- Stuff
+- More Stuff
 
-jquery
-waitforkeyelements?
+----------
+
+Credits
+-------------------
+
+
+----------
