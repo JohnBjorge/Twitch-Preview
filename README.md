@@ -1,38 +1,23 @@
 Twitch-Preview
-===================
-One Paragraph of project description goes here
-
-----------
-
+==================
+The goal of this project was to create a userscript that would make the viewing experience on [Twitch.tv](https://www.twitch.tv/) easier and more pleasant. Often times, when viewing the list of live channels for a game the thumbnail image for a channel will not give an accurate impression of the current streamers activities. Twitch-Preview solves this problem, replacing a channel thumbnail with the actual live stream. 
 Getting Started
 ---------------
-These instructions will get you a copy of the project up and running on your local machine.
+These instructions will assist getting Twitch-Preview running on your browse.
+### Installation
+First install either [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) or [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (Firefox) depending on your preferred browser. 
 
-### Prerequisites ###
-What things you need to install the software and how to install them.
+Next download the userscript Twitch-Preview. It should be added to your userscript manager (Tampermonkey or Greasemonkey).
+### Try it out
+If you're using Firefox, you must disable protection by clicking the icon left of your url when visiting twitch. There is currently no workaround for this and it must be done each session unfortunately.
 
-### Installation ###
-A step by step series of examples that tell you have to get a development env running
-
-Stay what the step will be
-
-Give the example
-And repeat
-
-until finished
-End with an example of getting some data out of the system or using it for a little demo
-
-----------
+Head on over to [Twitch.tv](https://twitch.tv) and try it out! Simply hover over a channel for 1 second and the live stream will appear.
 
 Future Plans
 -------------------
-- Stuff
-- More Stuff
-
-----------
+- Autoplay (Chrome)
+- Disable protection workaround (Firefox)
 
 Credits
 -------------------
 
-
-----------
