@@ -1,13 +1,12 @@
 // ==UserScript==
 // @name           Twitch-Preview
-// @description    Replaces twitch channel thumbnail image with live stream on mouse over.
 // @namespace      http://johnbjorge.com
 // @version        1.0
-// @author         johnnybgucci (userscript user id link)
+// @author         John Bjorge
+// @description    Replaces twitch channel thumbnail image with live stream on mouse over.
 // @supportURL     https://github.com/JohnBjorge/Twitch-Preview
 // @include        http://www.twitch.tv/directory/game/*
 // @include        https://www.twitch.tv/directory/game/*
-// @version        1.0
 // @grant          GM_addStyle
 // @run-at         document-start
 // @require        https://code.jquery.com/jquery-1.11.2.min.js
