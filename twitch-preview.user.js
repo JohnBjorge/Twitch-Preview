@@ -1,35 +1,31 @@
 // ==UserScript==
-// @name           Twitch Preview
-// @description    Allows you to preview a channel upon mousing over.
-// @namespace      hi
+// @name           Twitch-Preview
+// @description    Replaces twitch channel thumbnail image with live stream on mouse over.
+// @namespace      http://johnbjorge.com
 // @version        1.0
 // @author         johnnybgucci (userscript user id link)
-// @supportURL     https://github.com/JohnBjorge/Twitch-Preview/issues
+// @supportURL     https://github.com/JohnBjorge/Twitch-Preview
 // @include        http://www.twitch.tv/directory/game/*
 // @include        https://www.twitch.tv/directory/game/*
+// @version        1.0
 // @grant          GM_addStyle
 // @run-at         document-start
 // @require        https://code.jquery.com/jquery-1.11.2.min.js
+// @require        https://gist.githubusercontent.com/BrockA/2625891/raw/9c97aa67ff9c5d56be34a55ad6c18a314e5eb548/waitForKeyElements.js
 // ==/UserScript==
-
 
 $(function() {
 
-    var timeout = null;
-    var browser = browserInfo().browser.toUpperCase();
-
-    //not sure what this does. I think it breaks out of iframes?
     if(window.top !== window.self) {
         return;
     }
 
-    //try finding a cleaner solution such as last comment https://gist.github.com/BrockA/2625891#file-waitforkeyelements-js
-    function waitForKeyElements(e,t,n,a){var r,o;r="undefined"==typeof a?$(e):$(a).contents().find(e),r&&r.length>0?(o=!0,r.each(function(){var e=$(this),n=e.data("alreadyFound")||!1;if(!n){var a=t(e);a?o=!1:e.data("alreadyFound",!0)}})):o=!1;var l=waitForKeyElements.controlObj||{},i=e.replace(/[^\w]/g,"_"),d=l[i];o&&n&&d?(clearInterval(d),delete l[i]):d||(d=setInterval(function(){waitForKeyElements(e,t,n,a)},300),l[i]=d),waitForKeyElements.controlObj=l};
+    var timeout = null; //timer for hovering over channel
+    var browser = browserInfo().browser.toUpperCase(); //current browser (chrome or firefox)
 
     // Waits for channel elements to load, once loaded calls main.
     // False means continues to check for new elements (infinite scroll)
     waitForKeyElements(".streams .stream .content .thumb, .videos .video .content .thumb .cap", main, false);
-
 
     // Once channel elements have loaded the function main detects mouse enter and mouse leave events
     // on the given channelNode. If mouse hovers over element for 1 second stream preview is generated.
@@ -76,7 +72,6 @@ $(function() {
             } else if (browser === 'FIREFOX') { 
                 //must click lock in browser to left of url and disable protection for twitch site
                 previewElement = $("<div id='streamPreview'><iframe src='https://player.twitch.tv/?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
-
             } else {
                 //if it's unrecognized browser I'm gonna go with flash working but doubtful it would work
                 previewElement = $("<div id='streamPreview'><iframe src='https://www-cdn.jtvnw.net/swflibs/TwitchPlayer.swf?channel=" + channel + "' height=" + height + " width=" + width + " frameborder='0' scrolling='no'></iframe></div>");
@@ -97,13 +92,10 @@ $(function() {
         }
     }
 
-
-
     // Removes the current stream preview element
     function removePreview() {
         $("#streamPreview").remove();
     }
-
 
     // Returns the name of browser and the version
     function browserInfo() {

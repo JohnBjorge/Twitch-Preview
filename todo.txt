@@ -1,3 +1,0 @@
-1. Loading icon?
-2. Clean up code (import the waitforkeyelements script)
-3. Work on readme for instructions
