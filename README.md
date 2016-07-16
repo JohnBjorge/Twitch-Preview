@@ -7,7 +7,7 @@ These instructions will assist getting Twitch-Preview running on your browse.
 ### Installation
 First install either [Tampermonkey](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo) (Chrome) or [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (Firefox) depending on your preferred browser. Chrome is strongly recommended.
 
-Next download the userscript [Twitch-Preview](https://gist.github.com/JohnBjorge/f79c0bb1edcacfa172f47cc287418f58) by clicking on the "raw" icon. It should be added to your userscript manager (Tampermonkey or Greasemonkey).
+Next download the userscript [Twitch-Preview](https://gist.github.com/JohnBjorge/aff3176a28856566200ca8b87a936b45) by clicking on the "raw" icon. It should be added to your userscript manager (Tampermonkey or Greasemonkey).
 ### Try it out
 If you're using Firefox, upon visiting twitch you must disable protection by clicking the lock icon left of the URL. If not, you will see a black live stream. There is currently no workaround for this and it must be done each session unfortunately.
 
