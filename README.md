@@ -1,6 +1,9 @@
 Twitch-Preview
 ==================
 The goal of this project was to create a userscript that would make the viewing experience on [Twitch.tv](https://www.twitch.tv/) easier and more pleasant. Often times, when viewing the list of live channels for a game the thumbnail image for a channel will not give an accurate impression of the current streamers activities. Twitch-Preview solves this problem, replacing a channel thumbnail image with the channel's live stream. 
+
+![Twitch-Preview Example in Chrome](http://johnbjorge.com/wp-content/uploads/2016/07/twitchimage2.png)
+
 Getting Started
 ---------------
 These instructions will assist getting Twitch-Preview running on your browse.
